@@ -27,7 +27,7 @@ self::ObserverAction('delete',$model);
         
     }
 
-    protected function ObserverAction(string $event,Model $model){
+    protected static function ObserverAction(string $event,Model $model){
         ActivityLogModel::create([
             'model_name' => get_class($model),
     'model_id' => $model->getKey(),
