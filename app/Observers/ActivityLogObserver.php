@@ -2,37 +2,42 @@
 
 namespace App\Observers;
 
+use App\Events\ObserverEvent;
 use App\Models\ActivityLogModel;
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityLogObserver
 {
-     public function created( Model $model): void
+     public function created($model): void
     {
+        ObserverEvent::dispatch($model,"created");
     
-self::ObserverAction('created',$model);
+      // self::ObserverAction('created',$model);
    }
 
 
     public function updated($model): void
     {
-self::ObserverAction('update',$model);
+        
+         ObserverEvent::dispatch($model,"updated");
+    //  self::ObserverAction('update',$model);
         
     }
 
 
     public function deleted($model): void
     {
-self::ObserverAction('delete',$model);
+        ObserverEvent::dispatch($model,"deleted");
+        // self::ObserverAction('delete',$model);
         
     }
 
-    protected static function ObserverAction(string $event,Model $model){
-        ActivityLogModel::create([
-            'model_name' => get_class($model),
-    'model_id' => $model->getKey(),
-    'action' => $event,
-    'model_data' => json_encode($model->toArray()),
-        ]);
-    }
+    // protected static function ObserverAction(string $event,Model $model){
+    //     ActivityLogModel::create([
+    //         'model_name' => get_class($model),
+    // 'model_id' => $model->getKey(),
+    // 'action' => $event,
+    // 'model_data' => json_encode($model->toArray()),
+    //     ]);
+    // }
 }
